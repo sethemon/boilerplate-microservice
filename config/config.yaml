@@ -1,0 +1,65 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Microservice configuration
+#  All values can be overridden by environment variables (see .env.example).
+#  Environment variables take precedence over this file.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+app:
+  name: "microservice-boilerplate"
+  version: "1.0.0"
+  description: "Production-ready async Python microservice"
+  environment: "development"       # development | staging | production
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4                       # uvicorn worker count
+  debug: false
+  secret_key: "change-me-in-production"
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+
+# ── Database ──────────────────────────────────────────────────────────────────
+# Change `url` to switch databases; everything else is optional tuning.
+#
+#  PostgreSQL  : postgresql+asyncpg://user:pass@host:5432/dbname
+#  MySQL       : mysql+aiomysql://user:pass@host:3306/dbname
+#  SQLite      : sqlite+aiosqlite:///./app.db
+#  SQL Server  : mssql+pyodbc://user:pass@host:1433/dbname?driver=ODBC+Driver+17+for+SQL+Server
+#  Oracle      : oracle+cx_oracle://user:pass@host:1521/SERVICE_NAME
+# ─────────────────────────────────────────────────────────────────────────────
+database:
+  url: "sqlite+aiosqlite:///./dev.db"   # default: SQLite for zero-config dev
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+  echo: false                           # set true to log all SQL statements
+
+# ── RabbitMQ ──────────────────────────────────────────────────────────────────
+rabbitmq:
+  url: "amqp://guest:guest@localhost:5672/"
+  exchange_name: "microservice.exchange"
+  exchange_type: "topic"                # direct | topic | fanout | headers
+  queue_name: "microservice.intake"
+  routing_key: "microservice.#"
+  prefetch_count: 10
+  reconnect_delay: 5                    # seconds between reconnect attempts
+  max_reconnect_attempts: 10
+  durable: true                         # survive broker restart
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"                         # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  file_path: "logs/app.log"
+  rotation: "100 MB"
+  retention: "30 days"
+  compression: "gz"
+  enqueue: true                         # thread-safe async logging via queue
+  backtrace: true
+  diagnose: false                       # set false in production (hides secrets)
+  format: "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {process} | {name}:{function}:{line} | {message}"
+
+# ── Metrics ───────────────────────────────────────────────────────────────────
+metrics:
+  enabled: true
+  path: "/metrics"                      # Prometheus scrape endpoint
