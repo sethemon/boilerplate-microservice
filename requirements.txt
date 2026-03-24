@@ -1,0 +1,31 @@
+# ── Core web framework ──────────────────────────────────────────────────────
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+
+# ── Validation & settings ───────────────────────────────────────────────────
+pydantic>=2.7.0
+pydantic-settings>=2.2.1
+python-dotenv>=1.0.1
+pyyaml>=6.0.1
+
+# ── Database (async) ────────────────────────────────────────────────────────
+sqlalchemy[asyncio]>=2.0.30
+asyncpg>=0.29.0          # PostgreSQL async driver
+aiomysql>=0.2.0          # MySQL async driver
+aiosqlite>=0.20.0        # SQLite async (dev / tests)
+# pyodbc>=5.1.0          # SQL Server (uncomment + pip install)
+# cx_Oracle>=8.3.0       # Oracle      (uncomment + pip install)
+
+# ── Message queue ───────────────────────────────────────────────────────────
+aio-pika>=9.4.1          # RabbitMQ async
+
+# ── Logging ─────────────────────────────────────────────────────────────────
+loguru>=0.7.2
+
+# ── Observability ───────────────────────────────────────────────────────────
+prometheus-client>=0.20.0
+psutil>=5.9.8
+
+# ── Utilities ───────────────────────────────────────────────────────────────
+httpx>=0.27.0
+tenacity>=8.3.0
